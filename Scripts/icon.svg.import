@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dvth6lxiyx1yr"
-path="res://.godot/imported/goal.png-56e7f57ddfd00a81b46bf380e08088e7.ctex"
+uid="uid://nx4qbim6rscl"
+path="res://.godot/imported/icon.svg-daedd9f49c55c39edcf22c0aa6080e50.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Art/goal.png"
-dest_files=["res://.godot/imported/goal.png-56e7f57ddfd00a81b46bf380e08088e7.ctex"]
+source_file="res://Scripts/icon.svg"
+dest_files=["res://.godot/imported/icon.svg-daedd9f49c55c39edcf22c0aa6080e50.ctex"]
 
 [params]
 
@@ -32,3 +32,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
+svg/scale=1.0
+editor/scale_with_editor_scale=false
+editor/convert_colors_with_editor_theme=false

@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=3 uid="uid://dih3b6l4v74ur"]
+
+[ext_resource type="Script" path="res://Scripts/Button_exit.gd" id="1_4uo0x"]
+[ext_resource type="Script" path="res://Scripts/Button_play.gd" id="1_r0asj"]
+
+[node name="main menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 322.0
+offset_bottom = 181.0
+
+[node name="Button_play" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 136.0
+offset_top = 88.0
+offset_right = 177.0
+offset_bottom = 119.0
+text = "Play"
+script = ExtResource("1_r0asj")
+
+[node name="Button_exit" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 138.0
+offset_top = 121.0
+offset_right = 175.0
+offset_bottom = 152.0
+text = "Exit"
+script = ExtResource("1_4uo0x")
