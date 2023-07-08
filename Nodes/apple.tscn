@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://clk2fujrdrs2v"]
+
+[ext_resource type="Texture2D" uid="uid://dvth6lxiyx1yr" path="res://Assets/Art/goal.png" id="2_kxg4v"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ogvs6"]
+size = Vector2(14, 14)
+
+[node name="Goal" type="Area2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 1
+texture = ExtResource("2_kxg4v")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ogvs6")

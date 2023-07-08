@@ -1,10 +1,11 @@
-[gd_scene load_steps=14 format=3 uid="uid://b6a58a38vbcny"]
+[gd_scene load_steps=15 format=3 uid="uid://b6a58a38vbcny"]
 
 [ext_resource type="Script" path="res://Scipts/sample_scene.gd" id="1_c64tg"]
 [ext_resource type="Texture2D" uid="uid://cyr8mug5judu1" path="res://Assets/Art/Tiles.png" id="1_vqtk4"]
 [ext_resource type="Texture2D" uid="uid://ixm7mgu0715" path="res://Assets/Art/path.png" id="3_mj5qd"]
 [ext_resource type="Script" path="res://Scipts/snake.gd" id="5_21h22"]
 [ext_resource type="Texture2D" uid="uid://dlrbedfc22v4p" path="res://Assets/Art/start.png" id="5_wfhag"]
+[ext_resource type="Script" path="res://Scipts/marker.gd" id="5_y3k15"]
 [ext_resource type="Texture2D" uid="uid://dvth6lxiyx1yr" path="res://Assets/Art/goal.png" id="6_16ft3"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_t1j73"]
@@ -41,7 +42,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		is_dragging = event.pressed
 		if is_dragging:
 			last_mouse_cell = local_to_map(get_local_mouse_position())
-			#set_cell_to_drag_value(last_mouse_cell)
+			set_cell_to_drag_value(last_mouse_cell)
 			layout_updated.emit()
 		return
 	
@@ -49,8 +50,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		var current_cell = local_to_map(get_local_mouse_position())
 		
 		var line = get_line(last_mouse_cell, current_cell)
-		#for point in line:
-			#set_cell_to_drag_value(point)
+		for point in line:
+			set_cell_to_drag_value(point)
 
 		if line.size() > 0:
 			layout_updated.emit()
@@ -144,6 +145,7 @@ wait_time = 0.5
 
 [node name="Goal" type="Area2D" parent="."]
 position = Vector2(56, 40)
+script = ExtResource("5_y3k15")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="Goal"]
@@ -155,3 +157,4 @@ shape = SubResource("RectangleShape2D_3snv8")
 [connection signal="path_finded" from="." to="Snake" method="_on_world_path_finded"]
 [connection signal="layout_updated" from="GameMap" to="." method="_on_layout_updated"]
 [connection signal="killApple" from="Snake" to="." method="_on_snake_kill_apple"]
+[connection signal="position_updated" from="Goal" to="." method="_on_marker_positions_updated"]

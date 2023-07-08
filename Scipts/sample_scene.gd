@@ -19,6 +19,14 @@ func _ready() -> void:
 	_update_grid_from_tilemap()
 	find_path()
 
+func _input(event):
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		var applescene = load("res://Nodes/apple.tscn")
+		var apple = applescene.instantiate()
+		apple.position = game_map.local_to_map(get_local_mouse_position())*16 + Vector2i(8, 8)
+		add_child(apple)
+		goal = apple 
+
 func _on_layout_updated() -> void:
 	_update_grid_from_tilemap()
 	find_path()
@@ -57,6 +65,7 @@ func _update_grid_from_tilemap() -> void:
 			# but something to keep in mind.
 			else:
 				astar_grid.set_point_solid(Vector2i(i, j), true)
+				
 
 func find_path() -> void:
 	path.clear()
@@ -71,3 +80,7 @@ func find_path() -> void:
 		path.set_cell(0, id, 1, Vector2(0, 0))
 	
 	path_finded.emit(id_path)
+
+
+func _on_snake_kill_apple():
+	goal.queue_free()
