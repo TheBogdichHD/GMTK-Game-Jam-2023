@@ -1,15 +1,19 @@
 extends Node2D
 
 signal path_finded
+signal grid_update
+signal victory
 
 @onready var game_map = $GameMap
 @onready var path = $Path
 @onready var start = $Snake
-@onready var goal = $Goal
+var goal: Area2D
 
 var astar_grid: AStarGrid2D
 var start_cell: Vector2i
 var end_cell: Vector2i
+
+var apple_count = 0
 
 func _ready() -> void:
 	_init_grid()
@@ -20,12 +24,17 @@ func _ready() -> void:
 	find_path()
 
 func _input(event):
-	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and apple_count != 1:
 		var applescene = load("res://Nodes/apple.tscn")
 		var apple = applescene.instantiate()
 		apple.position = game_map.local_to_map(get_local_mouse_position())*16 + Vector2i(8, 8)
-		add_child(apple)
-		goal = apple 
+		if astar_grid.is_point_solid(game_map.local_to_map(get_local_mouse_position())):
+			apple_count=0
+		else:
+			add_child(apple)
+			goal = apple 
+			find_path()
+			apple_count+=1
 
 func _on_layout_updated() -> void:
 	_update_grid_from_tilemap()
@@ -65,22 +74,36 @@ func _update_grid_from_tilemap() -> void:
 			# but something to keep in mind.
 			else:
 				astar_grid.set_point_solid(Vector2i(i, j), true)
-				
+	grid_update.emit(astar_grid)
+
 
 func find_path() -> void:
 	path.clear()
+	if goal == null:
+		return
 	start_cell = game_map.local_to_map(start.position)
 	end_cell = game_map.local_to_map(goal.position)
-	
 	if start_cell == end_cell or !astar_grid.is_in_boundsv(start_cell) or !astar_grid.is_in_boundsv(end_cell):
 		return
 
 	var id_path = astar_grid.get_id_path(start_cell, end_cell)
 	for id in id_path:
 		path.set_cell(0, id, 1, Vector2(0, 0))
-	
+	if id_path.size() == 0:
+		victory.emit()
+		return
+	path.erase_cell(0, id_path[0])
 	path_finded.emit(id_path)
 
 
 func _on_snake_kill_apple():
 	goal.queue_free()
+	apple_count-=1
+
+
+func _on_snake_change_grid(head, tail, boo):
+	if boo:
+		astar_grid.set_point_solid(head, true)
+	else:
+		astar_grid.set_point_solid(head, true)
+		astar_grid.set_point_solid(tail, false)
